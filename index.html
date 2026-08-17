@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Soporte Técnico – PNP</title>
+  <!-- Bootstrap 5 + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Librerías externas -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+  </script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js">
+  </script>
+
+  <style>
+    /* ===== PALETA EXACTA (extraída de la imagen) ===== */
+    :root {
+      --green-header-top: #0B3D26;
+      --green-header-mid: #1D6342;
+      --green-header-bottom: #072617;
+      --green-button-primary: #155235;
+      --green-button-hover: #0E3C26;
+      --gold-accent: #C59218;
+      --blue-link: #2563EB;
+      --blue-link-hover: #1D4ED8;
+      --bg-page: #EAECEF;
+      --bg-card: #FFFFFF;
+      --bg-card-secondary: #F1F5F9;
+      --border-input: #D1D5DB;
+      --text-primary: #1E293B;
+      --text-muted: #64748B;
+      --text-white: #FFFFFF;
+      --shadow-card: 0 10px 25px rgba(0, 0, 0, 0.1);
+      --shadow-btn: 0 4px 10px rgba(0, 0, 0, 0.25);
+      --bg-dark: #121f1a;
+      --card-dark: #1e2d26;
+      --border-dark: #2d3f37;
+      --text-dark: #e8edec;
+      --text-muted-dark: #9aaeb5;
+    }
+
+    body.dark-mode {
+      --bg-page: var(--bg-dark);
+      --bg-card: var(--card-dark);
+      --bg-card-secondary: #263a32;
+      --border-input: var(--border-dark);
+      --text-primary: var(--text-dark);
+      --text-muted: var(--text-muted-dark);
+      --text-white: #e8edec;
+      --shadow-card: 0 10px 25px rgba(0, 0, 0, 0.5);
+      --shadow-btn: 0 4px 10px rgba(0, 0, 0, 0.5);
+      --green-header-top: #0a3321;
+      --green-header-mid: #155235;
+      --green-header-bottom: #061f12;
+      --gold-accent: #d4a02a;
+      --blue-link: #60a5fa;
+      --blue-link-hover: #93bbfc;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg-page);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--text-primary);
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .card-formal {
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: none;
+      box-shadow: var(--shadow-card);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    .header-banner {
+      background: linear-gradient(180deg,
+          var(--green-header-top) 0%,
+          var(--green-header-mid) 48%,
+          var(--green-header-bottom) 100%);
+      border-bottom: 4px solid var(--gold-accent);
+      color: var(--text-white);
+      padding: 24px 16px;
+      text-align: center;
+      border-radius: 16px 16px 0 0;
+      margin: -2rem -2rem 1.5rem -2rem;
+    }
+
+    .header-banner img {
+      display: block;
+      margin: 0 auto 6px;
+      max-height: 90px;
+      width: auto;
+    }
+
+    .header-banner p {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      opacity: 0.95;
+    }
+
+    .navbar-formal {
+      background: var(--bg-card);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      border-bottom: 4px solid var(--gold-accent);
+      padding: 0.6rem 1.5rem;
+      border-radius: 0 0 16px 16px;
+      margin-bottom: 1.5rem;
+    }
+
+    .navbar-formal .navbar-brand {
+      color: var(--green-header-top);
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .navbar-formal .navbar-brand img {
+      height: 40px;
+      width: auto;
+    }
+
+    body.dark-mode .navbar-formal .navbar-brand {
+      color: var(--gold-accent);
+    }
+
+    .nav-tabs .nav-link {
+      color: var(--text-muted);
+      border: none;
+      border-radius: 30px;
+      padding: 0.5rem 1.2rem;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    .nav-tabs .nav-link.active {
+      background: var(--green-button-primary);
+      color: var(--text-white);
+      box-shadow: 0 4px 12px rgba(21, 82, 53, 0.3);
+    }
+
+    .nav-tabs .nav-link:hover:not(.active) {
+      background: var(--bg-card-secondary);
+      color: var(--green-button-primary);
+    }
+
+    body.dark-mode .nav-tabs .nav-link.active {
+      background: var(--gold-accent);
+      color: #1a1a1a;
+    }
+    body.dark-mode .nav-tabs .nav-link:hover:not(.active) {
+      background: rgba(197, 146, 24, 0.15);
+      color: var(--gold-accent);
+    }
+
+    .btn-primary {
+      background-color: var(--green-button-primary);
+      color: var(--text-white);
+      border: none;
+      border-radius: 10px;
+      padding: 10px 24px;
+      font-weight: 700;
+      box-shadow: var(--shadow-btn);
+      transition: background-color 0.2s ease, transform 0.1s;
+    }
+    .btn-primary:hover {
+      background-color: var(--green-button-hover);
+      transform: translateY(-2px);
+    }
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-success {
+      background-color: var(--green-button-primary);
+      color: var(--text-white);
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      box-shadow: var(--shadow-btn);
+    }
+    .btn-success:hover {
+      background-color: var(--green-button-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-danger {
+      background-color: #b91c1c;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+    .btn-danger:hover {
+      background-color: #991b1b;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline-primary {
+      border: 2px solid var(--green-button-primary);
+      color: var(--green-button-primary);
+      background: transparent;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    .btn-outline-primary:hover {
+      background: var(--green-button-primary);
+      color: var(--text-white);
+    }
+
+    .form-control,
+    .form-select {
+      border: 1px solid var(--border-input);
+      border-radius: 10px;
+      padding: 0.65rem 1rem;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      transition: 0.2s;
+    }
+    .form-control:focus,
+    .form-select:focus {
+      border-color: var(--green-button-primary);
+      box-shadow: 0 0 0 4px rgba(21, 82, 53, 0.15);
+    }
+
+    .form-label {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    a,
+    .link {
+      color: var(--blue-link);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    a:hover,
+    .link:hover {
+      color: var(--blue-link-hover);
+      text-decoration: underline;
+    }
+
+    .table-formal {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      color: var(--text-primary);
+    }
+    .table-formal th {
+      background: var(--bg-card-secondary);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--border-input);
+      padding: 0.75rem 1rem;
+    }
+    .table-formal td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-input);
+    }
+    .table-formal tr:hover td {
+      background: rgba(21, 82, 53, 0.06);
+    }
+    body.dark-mode .table-formal tr:hover td {
+      background: rgba(197, 146, 24, 0.08);
+    }
+
+    .alert-panel {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .alert-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      box-shadow: var(--shadow-card);
+      padding: 1.2rem;
+      min-width: 260px;
+      flex: 1 1 280px;
+      border-left: 6px solid;
+      transition: 0.2s;
+    }
+    .alert-card.normal {
+      border-left-color: var(--green-button-primary);
+    }
+    .alert-card.urgente {
+      border-left-color: var(--gold-accent);
+    }
+    .alert-card.muy-urgente {
+      border-left-color: #b91c1c;
+    }
+
+    .priority-badge {
+      display: inline-block;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .alert-card.normal .priority-badge {
+      background: #e6f4ea;
+      color: #155235;
+    }
+    .alert-card.urgente .priority-badge {
+      background: #fef7e0;
+      color: #b7950b;
+    }
+    .alert-card.muy-urgente .priority-badge {
+      background: #fce8e6;
+      color: #991b1b;
+    }
+    body.dark-mode .alert-card.normal .priority-badge {
+      background: rgba(21, 82, 53, 0.2);
+      color: #6fcf97;
+    }
+    body.dark-mode .alert-card.urgente .priority-badge {
+      background: rgba(197, 146, 24, 0.2);
+      color: #f2c94c;
+    }
+    body.dark-mode .alert-card.muy-urgente .priority-badge {
+      background: rgba(185, 28, 28, 0.2);
+      color: #f87171;
+    }
+
+    .login-container {
+      max-width: 460px;
+      margin: 60px auto;
+    }
+    .login-container .card-formal {
+      padding: 0;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+    .login-container .card-formal .header-banner {
+      border-radius: 0;
+      margin: 0;
+      padding: 28px 16px 20px;
+    }
+    .login-container .card-formal .header-banner img {
+      max-height: 85px;
+    }
+    .login-container .card-formal .header-banner p {
+      font-size: 1.3rem;
+    }
+
+    .login-body {
+      padding: 2rem 2rem 1.5rem;
+    }
+
+    .login-container .nav-pills .nav-link {
+      border-radius: 30px;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 0.4rem 1.2rem;
+    }
+    .login-container .nav-pills .nav-link.active {
+      background: var(--green-button-primary);
+      color: var(--text-white);
+    }
+    .login-container .nav-pills .nav-link:hover:not(.active) {
+      background: var(--bg-card-secondary);
+      color: var(--green-button-primary);
+    }
+
+    .login-container .bg-secondary-soft {
+      background-color: var(--bg-card-secondary);
+      border-radius: 12px;
+      padding: 0.8rem 1rem;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      min-width: 260px;
+      z-index: 1055;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border-left: 5px solid var(--green-button-primary);
+      box-shadow: var(--shadow-card);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      transition: opacity 0.3s;
+      font-weight: 500;
+    }
+    .toast.error {
+      border-left-color: #b91c1c;
+    }
+
+    #inactivity-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+      background: var(--bg-card);
+      border-bottom: 4px solid var(--gold-accent);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 0.8rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      transform: translateY(-100%);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      border-radius: 0 0 20px 20px;
+    }
+    #inactivity-banner.show {
+      transform: translateY(0);
+    }
+    .inactivity-banner-content i {
+      font-size: 1.5rem;
+      color: var(--gold-accent);
+    }
+    #countdown-timer {
+      font-weight: 700;
+      color: #b91c1c;
+      background: rgba(185, 28, 28, 0.1);
+      padding: 0.2rem 0.6rem;
+      border-radius: 8px;
+      min-width: 3.2rem;
+      display: inline-block;
+      text-align: center;
+    }
+    .inactivity-progress-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--bg-card-secondary);
+      border-radius: 0 0 20px 20px;
+      overflow: hidden;
+    }
+    .inactivity-progress-bar {
+      height: 100%;
+      background: var(--gold-accent);
+      width: 100%;
+      transition: width 1s linear;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 2px solid var(--border-input);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-primary);
+      transition: 0.2s;
+    }
+    .theme-toggle:hover {
+      border-color: var(--green-button-primary);
+      color: var(--green-button-primary);
+    }
+
+    @media (max-width: 576px) {
+      .login-container {
+        margin: 30px 15px;
+      }
+      .login-body {
+        padding: 1.5rem;
+      }
+      .header-banner img {
+        max-height: 70px;
+      }
+      .navbar-formal .navbar-brand {
+        font-size: 1rem;
+      }
+      .navbar-formal .navbar-brand img {
+        height: 32px;
+      }
+      #inactivity-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.6rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BANNER DE INACTIVIDAD -->
+  <div id="inactivity-banner">
+    <div class="inactivity-banner-content">
+      <i class="bi bi-hourglass-split"></i>
+      <span>¿Aún estás ahí? Tu sesión se cerrará en <span id="countdown-timer">03:00</span> minutos por inactividad.</span>
+    </div>
+    <div class="inactivity-banner-actions">
+      <button class="btn btn-sm btn-primary" id="extend-session-btn"><i class="bi bi-arrow-repeat me-1"></i>Extender</button>
+    </div>
+    <div class="inactivity-progress-container">
+      <div id="inactivity-progress-bar" class="inactivity-progress-bar" style="width: 100%;"></div>
+    </div>
+  </div>
+
+  <!-- LOGIN -->
+  <div id="auth-container" class="container">
+    <div class="login-container">
+      <div class="card-formal">
+        <div class="header-banner">
+          <img src="logo.png" alt="Logo PNP" />
+          <p>Soporte Técnico</p>
+        </div>
+
+        <div class="login-body">
+          <div id="connection-status" class="mb-3 small text-center"></div>
+
+          <ul class="nav nav-pills justify-content-center mb-3" id="authTabs">
+            <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#login">Iniciar Sesión</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#register">Registrarse</button></li>
+          </ul>
+
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="login">
+              <div class="mb-3 text-start">
+                <label class="form-label"><i class="bi bi-envelope me-1"></i>Correo electrónico</label>
+                <input type="email" id="login-email" class="form-control" placeholder="correo@ejemplo.com" />
+              </div>
+              <div class="mb-3 text-start">
+                <label class="form-label"><i class="bi bi-lock me-1"></i>Clave INICIAL (DNI)</label>
+                <input type="password" id="login-password" class="form-control" placeholder="12345678" maxlength="8" />
+              </div>
+              <button class="btn btn-primary w-100" id="login-btn"><i class="bi bi-box-arrow-in-right me-2"></i>Ingresar</button>
+              <div id="login-error" class="text-danger mt-2 small"></div>
+            </div>
+
+            <div class="tab-pane fade" id="register">
+              <div class="mb-3 text-start">
+                <label class="form-label"><i class="bi bi-envelope me-1"></i>Correo electrónico</label>
+                <input type="email" id="reg-email" class="form-control" placeholder="correo@ejemplo.com" />
+              </div>
+              <div class="mb-3 text-start">
+                <label class="form-label"><i class="bi bi-person-badge me-1"></i>DNI (8 dígitos)</label>
+                <input type="text" id="reg-dni" class="form-control" placeholder="12345678" maxlength="8" />
+              </div>
+              <button class="btn btn-success w-100" id="register-btn"><i class="bi bi-person-plus me-2"></i>Crear cuenta</button>
+              <div id="reg-error" class="text-danger mt-2 small"></div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 bg-secondary-soft">
+            <p class="text-muted small fw-bold mb-2">Accesos Rápidos</p>
+            <div class="d-flex flex-wrap gap-2 justify-content-center">
+              <a href="https://correo.policia.gob.pe/owa/auth/logon.aspx" target="_blank" class="btn btn-outline-primary btn-sm">Correo PNP</a>
+              <a href="https://sgd.policia.gob.pe/sgd/login.do" target="_blank" class="btn btn-outline-primary btn-sm">SGD PNP</a>
+              <a href="https://sigcp.policia.gob.pe/" target="_blank" class="btn btn-outline-primary btn-sm">SIGCP PNP</a>
+              <a href="https://sigesapol.dirsapolpnp.gob.pe/auth/login" target="_blank" class="btn btn-outline-primary btn-sm">SIGESAPOL</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="app-container" class="hidden">
+    <nav class="navbar-formal container">
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="navbar-brand">
+          <img src="logo.png" alt="Logo PNP" />
+          Soporte Técnico
+        </span>
+        <div class="d-flex align-items-center gap-3">
+          <span id="user-info" class="text-muted fw-semibold"></span>
+          <button id="theme-toggle-btn" class="theme-toggle" title="Cambiar tema"><i class="bi bi-moon-fill"></i></button>
+          <button class="btn btn-outline-primary btn-sm" id="logout-btn"><i class="bi bi-box-arrow-right me-1"></i>Salir</button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container py-4">
+      <div id="alertas-mural" class="alert-panel"></div>
+
+      <ul class="nav nav-tabs mb-4">
+        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#atencion"><i class="bi bi-plus-circle me-1"></i>Nueva Atención</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#historial"><i class="bi bi-list-ul me-1"></i>Historial</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#mural"><i class="bi bi-pin-map me-1"></i>Mural</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#reporte"><i class="bi bi-file-earmark-spreadsheet me-1"></i>Exportar</button></li>
+      </ul>
+
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="atencion">
+          <div class="card-formal">
+            <h4 id="form-title" class="mb-3" style="font-weight: 700; color: var(--green-header-top);">Nueva Atención</h4>
+            <form id="form-atencion">
+              <input type="hidden" id="servicio" value="Soporte Técnico" />
+              <input type="hidden" id="edit-id" value="" />
+              <input type="hidden" id="mural-id" value="" />
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Unidad / Departamento</label>
+                  <input type="text" class="form-control" id="unidad" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Fecha</label>
+                  <div class="input-group">
+                    <input type="date" class="form-control" id="fecha" required />
+                    <button class="btn btn-outline-secondary" type="button" id="btn-hoy">Hoy</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Actividad realizada</label>
+                <textarea class="form-control" id="actividad" rows="3" required spellcheck="true" lang="es"></textarea>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Prioridad</label>
+                  <select class="form-select" id="prioridad">
+                    <option value="Normal">Normal</option>
+                    <option value="Urgente">Urgente</option>
+                    <option value="Muy Urgente">Muy Urgente</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Estado</label>
+                  <select class="form-select" id="estado">
+                    <option value="Atendido">Atendido</option>
+                    <option value="Revisado">Revisado</option>
+                    <option value="Verificado">Verificado</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary" id="submit-btn"><i class="bi bi-save me-1"></i>Guardar</button>
+                <button type="button" class="btn btn-outline-secondary d-none" id="cancel-btn">Cancelar</button>
+              </div>
+              <div id="msg-atencion" class="mt-2 small"></div>
+            </form>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="historial">
+          <div class="card-formal">
+            <h4 class="mb-3" style="font-weight: 700; color: var(--green-header-top);">Mis Atenciones</h4>
+            <div class="row g-2 mb-3">
+              <div class="col-md-4">
+                <label class="form-label">Desde</label>
+                <input type="date" class="form-control" id="filtro-desde-historial" />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Hasta</label>
+                <input type="date" class="form-control" id="filtro-hasta-historial" />
+              </div>
+              <div class="col-md-4 d-flex align-items-end">
+                <button class="btn btn-primary w-100" id="aplicar-filtro-historial"><i class="bi bi-funnel me-1"></i>Filtrar</button>
+              </div>
+            </div>
+            <div id="lista-atenciones"></div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="mural">
+          <div class="card-formal">
+            <h4 class="mb-3" style="font-weight: 700; color: var(--green-header-top);">Publicar en el Mural</h4>
+            <form id="form-mural">
+              <div class="mb-3">
+                <label class="form-label">Nota</label>
+                <input type="text" id="contenido-mural" class="form-control" placeholder="Escribe una nota..." required />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Prioridad</label>
+                <select class="form-select" id="prioridad-mural">
+                  <option value="Normal">Normal</option>
+                  <option value="Urgente">Urgente</option>
+                  <option value="Muy Urgente">Muy Urgente</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary"><i class="bi bi-send me-1"></i>Publicar</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="reporte">
+          <div class="card-formal">
+            <h4 class="mb-3" style="font-weight: 700; color: var(--green-header-top);">Exportar Atenciones</h4>
+            <p class="text-muted">Seleccione el rango de fechas y el formato deseado.</p>
+            <div class="row g-2 mb-3">
+              <div class="col-md-4">
+                <label class="form-label">Desde</label>
+                <input type="date" class="form-control" id="filtro-desde-reporte" max="" />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Hasta</label>
+                <input type="date" class="form-control" id="filtro-hasta-reporte" min="" max="" />
+              </div>
+              <div class="col-md-4 d-flex align-items-end gap-2">
+                <button class="btn btn-success" id="btn-excel"><i class="bi bi-file-earmark-excel me-1"></i>Excel</button>
+                <button class="btn btn-danger" id="btn-pdf"><i class="bi bi-file-earmark-pdf me-1"></i>PDF</button>
+              </div>
+            </div>
+            <div id="msg-reporte" class="mt-2 small"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+  </script>
+  <script>
+    // ========== CONFIGURACIÓN ==========
+    const SUPABASE_URL = 'https://ehonufkjsyrytgoramgg.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_-lpXWdjSUS1TDUQYUuhtlQ_veWqhDl6';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const authContainer = document.getElementById('auth-container');
+    const appContainer = document.getElementById('app-container');
+    const userInfo = document.getElementById('user-info');
+    const statusDiv = document.getElementById('connection-status');
+    let currentUser = null;
+
+    // ========== TEMA ==========
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+
+    function setTheme(isDark) {
+      if (isDark) {
+        document.body.classList.add('dark-mode');
+        themeToggleBtn.innerHTML = '<i class="bi bi-sun-fill"></i>';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.body.classList.remove('dark-mode');
+        themeToggleBtn.innerHTML = '<i class="bi bi-moon-fill"></i>';
+        localStorage.setItem('theme', 'light');
+      }
+    }
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') setTheme(true);
+    else setTheme(false);
+    themeToggleBtn.addEventListener('click', () => setTheme(!document.body.classList.contains('dark-mode')));
+
+    // ========== TOAST ==========
+    function mostrarToast(mensaje, esError = false) {
+      const toast = document.createElement('div');
+      toast.className = `toast ${esError ? 'error' : ''}`;
+      toast.textContent = mensaje;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3500);
+    }
+
+    // ========== CONEXIÓN ==========
+    (async () => {
+      statusDiv.innerHTML = '<span class="text-muted">Verificando conexión...</span>';
+      try {
+        const { error } = await supabaseClient.auth.getSession();
+        if (error) throw error;
+        statusDiv.innerHTML = '<span class="text-success">✅ Conectado</span>';
+      } catch (err) {
+        statusDiv.innerHTML = `<span class="text-danger">⚠️ Error: ${err.message}</span>`;
+      }
+    })();
+
+    // ========== CONTROL DE INACTIVIDAD ==========
+    const INACTIVITY_WARNING_DELAY = 120000;
+    const LOGOUT_DELAY = 180000;
+    const COUNTDOWN_TOTAL_SECONDS = 180;
+
+    let inactivityWarningTimeout = null;
+    let logoutTimeout = null;
+    let countdownInterval = null;
+    let countdownSeconds = COUNTDOWN_TOTAL_SECONDS;
+
+    const inactivityBanner = document.getElementById('inactivity-banner');
+    const countdownTimer = document.getElementById('countdown-timer');
+    const progressBar = document.getElementById('inactivity-progress-bar');
+    const extendSessionBtn = document.getElementById('extend-session-btn');
+
+    function updateCountdownDisplay() {
+      const mins = Math.floor(countdownSeconds / 60);
+      const secs = countdownSeconds % 60;
+      const display = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      countdownTimer.textContent = display;
+      const progress = (countdownSeconds / COUNTDOWN_TOTAL_SECONDS) * 100;
+      progressBar.style.width = progress + '%';
+    }
+
+    function showInactivityWarning() {
+      inactivityBanner.classList.add('show');
+      countdownSeconds = COUNTDOWN_TOTAL_SECONDS;
+      updateCountdownDisplay();
+
+      countdownInterval = setInterval(() => {
+        countdownSeconds--;
+        updateCountdownDisplay();
+        if (countdownSeconds <= 0) {
+          clearInterval(countdownInterval);
+          countdownInterval = null;
+        }
+      }, 1000);
+
+      logoutTimeout = setTimeout(() => {
+        stopInactivityWatch();
+        logout().then(() => {
+          mostrarToast('🔒 Sesión cerrada por inactividad.', true);
+        });
+      }, LOGOUT_DELAY);
+    }
+
+    function hideInactivityWarning() {
+      inactivityBanner.classList.remove('show');
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+      if (logoutTimeout) {
+        clearTimeout(logoutTimeout);
+        logoutTimeout = null;
+      }
+      progressBar.style.width = '100%';
+      countdownSeconds = COUNTDOWN_TOTAL_SECONDS;
+      updateCountdownDisplay();
+    }
+
+    function resetInactivityTimer() {
+      if (inactivityWarningTimeout) {
+        clearTimeout(inactivityWarningTimeout);
+        inactivityWarningTimeout = null;
+      }
+      hideInactivityWarning();
+      if (currentUser) {
+        inactivityWarningTimeout = setTimeout(showInactivityWarning, INACTIVITY_WARNING_DELAY);
+      }
+    }
+
+    function startInactivityWatch() {
+      resetInactivityTimer();
+      window.addEventListener('mousemove', resetInactivityTimer);
+      window.addEventListener('keydown', resetInactivityTimer);
+      window.addEventListener('click', resetInactivityTimer);
+      window.addEventListener('scroll', resetInactivityTimer);
+      window.addEventListener('touchstart', resetInactivityTimer);
+    }
+
+    function stopInactivityWatch() {
+      if (inactivityWarningTimeout) {
+        clearTimeout(inactivityWarningTimeout);
+        inactivityWarningTimeout = null;
+      }
+      hideInactivityWarning();
+      window.removeEventListener('mousemove', resetInactivityTimer);
+      window.removeEventListener('keydown', resetInactivityTimer);
+      window.removeEventListener('click', resetInactivityTimer);
+      window.removeEventListener('scroll', resetInactivityTimer);
+      window.removeEventListener('touchstart', resetInactivityTimer);
+    }
+
+    extendSessionBtn.addEventListener('click', () => {
+      resetInactivityTimer();
+    });
+
+    // ========== AUTENTICACIÓN ==========
+    async function login() {
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value.trim();
+      const errorDiv = document.getElementById('login-error');
+      errorDiv.textContent = '';
+      if (!email || !password) {
+        errorDiv.textContent = 'Complete todos los campos.';
+        return;
+      }
+      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) errorDiv.textContent = 'Credenciales incorrectas.';
+    }
+
+    async function register() {
+      const email = document.getElementById('reg-email').value.trim();
+      const dni = document.getElementById('reg-dni').value.trim();
+      const errorDiv = document.getElementById('reg-error');
+      errorDiv.textContent = '';
+      if (!email || !dni || dni.length !== 8) {
+        errorDiv.textContent = 'Ingrese un correo válido y DNI de 8 dígitos.';
+        return;
+      }
+      const { error } = await supabaseClient.auth.signUp({
+        email,
+        password: dni,
+        options: { data: { dni } }
+      });
+      if (error) errorDiv.textContent = 'Error al registrar.';
+      else {
+        alert('✅ Cuenta creada. Ahora inicie sesión.');
+        document.querySelector('[data-bs-target="#login"]').click();
+      }
+    }
+
+    async function logout() {
+      await supabaseClient.auth.signOut();
+    }
+
+    function mostrarDashboard(user) {
+      currentUser = user;
+      userInfo.textContent = `DNI: ${user.user_metadata?.dni || ''}`;
+      authContainer.classList.add('hidden');
+      appContainer.classList.remove('hidden');
+      inicializarExportTab();
+      cargarAlertasMural();
+      cargarHistorial();
+      startInactivityWatch();
+    }
+
+    function ocultarDashboard() {
+      stopInactivityWatch();
+      authContainer.classList.remove('hidden');
+      appContainer.classList.add('hidden');
+      currentUser = null;
+    }
+
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+      if (session?.user) mostrarDashboard(session.user);
+      else ocultarDashboard();
+    });
+
+    (async () => {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (session?.user) mostrarDashboard(session.user);
+    })();
+
+    document.getElementById('login-btn').addEventListener('click', login);
+    document.getElementById('register-btn').addEventListener('click', register);
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      stopInactivityWatch();
+      await logout();
+    });
+
+    // ========== FECHAS ==========
+    function formatearFecha(fechaStr) {
+      if (!fechaStr) return '';
+      const [year, month, day] = fechaStr.split('-');
+      return `${day}/${month}/${year}`;
+    }
+
+    function getFechaHoy() {
+      const hoy = new Date();
+      const dia = String(hoy.getDate()).padStart(2, '0');
+      const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+      const anio = hoy.getFullYear();
+      return `${anio}-${mes}-${dia}`;
+    }
+
+    // ========== EXPORTAR ==========
+    function inicializarExportTab() {
+      const hoy = getFechaHoy();
+      const inputDesde = document.getElementById('filtro-desde-reporte');
+      const inputHasta = document.getElementById('filtro-hasta-reporte');
+
+      inputDesde.value = hoy;
+      inputDesde.max = hoy;
+      inputHasta.value = hoy;
+      inputHasta.min = hoy;
+      inputHasta.max = hoy;
+
+      inputDesde.addEventListener('change', () => {
+        const desdeVal = inputDesde.value;
+        if (desdeVal) {
+          inputHasta.min = desdeVal;
+          if (inputHasta.value && inputHasta.value < desdeVal) {
+            inputHasta.value = desdeVal;
+          }
+        }
+      });
+
+      inputHasta.addEventListener('change', () => {
+        const hastaVal = inputHasta.value;
+        const desdeVal = inputDesde.value;
+        if (hastaVal && desdeVal && hastaVal < desdeVal) {
+          inputHasta.value = desdeVal;
+          mostrarToast('La fecha final no puede ser anterior a la inicial.', true);
+        }
+        if (hastaVal > getFechaHoy()) {
+          inputHasta.value = getFechaHoy();
+          mostrarToast('La fecha final no puede ser superior a hoy.', true);
+        }
+      });
+    }
+
+    // ========== ATENCIONES ==========
+    const formAtencion = document.getElementById('form-atencion');
+    const editIdInput = document.getElementById('edit-id');
+    const muralIdInput = document.getElementById('mural-id');
+    const servicioInput = document.getElementById('servicio');
+    const unidadInput = document.getElementById('unidad');
+    const actividadInput = document.getElementById('actividad');
+    const fechaInput = document.getElementById('fecha');
+    const prioridadInput = document.getElementById('prioridad');
+    const estadoInput = document.getElementById('estado');
+    const submitBtn = document.getElementById('submit-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const formTitle = document.getElementById('form-title');
+    const msgDiv = document.getElementById('msg-atencion');
+
+    fechaInput.max = getFechaHoy();
+    document.getElementById('btn-hoy').addEventListener('click', () => {
+      fechaInput.value = getFechaHoy();
+    });
+
+    function setFechaPorDefecto() {
+      if (!editIdInput.value) fechaInput.value = getFechaHoy();
+    }
+    setFechaPorDefecto();
+
+    function setEditMode(atencion) {
+      editIdInput.value = atencion.id;
+      unidadInput.value = atencion.unidad_departamento || '';
+      actividadInput.value = atencion.actividad || '';
+      fechaInput.value = atencion.fecha || getFechaHoy();
+      prioridadInput.value = atencion.prioridad || 'Normal';
+      estadoInput.value = atencion.estado || 'Atendido';
+      servicioInput.value = 'Soporte Técnico';
+      muralIdInput.value = '';
+      formTitle.textContent = '✏️ Editar Atención';
+      submitBtn.textContent = 'Actualizar';
+      cancelBtn.classList.remove('d-none');
+    }
+
+    function resetForm() {
+      editIdInput.value = '';
+      muralIdInput.value = '';
+      formAtencion.reset();
+      servicioInput.value = 'Soporte Técnico';
+      prioridadInput.value = 'Normal';
+      estadoInput.value = 'Atendido';
+      formTitle.textContent = 'Nueva Atención';
+      submitBtn.textContent = 'Guardar';
+      cancelBtn.classList.add('d-none');
+      msgDiv.innerHTML = '';
+      setFechaPorDefecto();
+    }
+
+    cancelBtn.addEventListener('click', resetForm);
+
+    formAtencion.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const unidad = unidadInput.value.trim();
+      const actividad = actividadInput.value.trim();
+      const fecha = fechaInput.value;
+      const prioridad = prioridadInput.value;
+      const estado = estadoInput.value;
+      const editId = editIdInput.value;
+      const muralId = muralIdInput.value;
+      const servicio = servicioInput.value;
+
+      if (!unidad || !actividad || !fecha) {
+        msgDiv.innerHTML = '<span class="text-danger">Complete todos los campos.</span>';
+        return;
+      }
+      if (new Date(fecha) > new Date().setHours(0, 0, 0, 0)) {
+        msgDiv.innerHTML = '<span class="text-danger">No se permiten fechas futuras.</span>';
+        return;
+      }
+      if (!currentUser) return;
+
+      const datos = {
+        servicio,
+        unidad_departamento: unidad,
+        actividad,
+        fecha,
+        prioridad,
+        estado,
+        user_id: currentUser.id
+      };
+      let error = null;
+      if (editId) {
+        const { error: updateError } = await supabaseClient
+          .from('atenciones').update(datos).eq('id', editId).eq('user_id', currentUser.id);
+        error = updateError;
+        if (!error) mostrarToast('✅ Atención actualizada correctamente.');
+      } else {
+        const { error: insertError } = await supabaseClient
+          .from('atenciones').insert([datos]);
+        error = insertError;
+        if (!error) mostrarToast('✅ Atención registrada exitosamente.');
+      }
+
+      if (error) msgDiv.innerHTML = `<span class="text-danger">Error: ${error.message}</span>`;
+      else {
+        if (muralId) await supabaseClient.from('mural').delete().eq('id', muralId);
+        resetForm();
+        cargarAlertasMural();
+        cargarHistorial();
+      }
+    });
+
+    async function eliminarAtencion(id) {
+      if (!confirm('¿Eliminar esta atención?')) return;
+      const { error } = await supabaseClient.from('atenciones').delete().eq('id', id).eq('user_id', currentUser.id);
+      if (error) alert('Error al eliminar.');
+      else {
+        mostrarToast('🗑️ Atención eliminada.');
+        cargarHistorial();
+      }
+    }
+
+    async function cargarHistorial(filtroDesde = null, filtroHasta = null) {
+      if (!currentUser) return;
+      let query = supabaseClient.from('atenciones').select('*').order('fecha', { ascending: false });
+      if (filtroDesde) query = query.gte('fecha', filtroDesde);
+      if (filtroHasta) query = query.lte('fecha', filtroHasta);
+      const { data, error } = await query;
+      const contenedor = document.getElementById('lista-atenciones');
+      if (error) {
+        contenedor.innerHTML = '<p class="text-danger">Error al cargar historial.</p>';
+        return;
+      }
+      if (!data.length) {
+        contenedor.innerHTML = '<p class="text-muted">No hay atenciones registradas.</p>';
+        return;
+      }
+
+      let html = `<table class="table-formal"><thead><tr><th>Fecha</th><th>Unidad</th><th>Actividad</th><th>Prioridad</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>`;
+      data.forEach(row => {
+        html += `<tr>
+          <td>${formatearFecha(row.fecha)}</td>
+          <td>${row.unidad_departamento}</td>
+          <td>${row.actividad}</td>
+          <td>${row.prioridad || 'Normal'}</td>
+          <td>${row.estado || 'Atendido'}</td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary edit-btn" data-id="${row.id}"><i class="bi bi-pencil me-1"></i>Editar</button>
+            <button class="btn btn-sm btn-danger delete-btn" data-id="${row.id}"><i class="bi bi-trash me-1"></i>Eliminar</button>
+          </td>
+        </tr>`;
+      });
+      html += '</tbody></table>';
+      contenedor.innerHTML = html;
+
+      contenedor.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const atencion = data.find(item => item.id === this.getAttribute('data-id'));
+          if (atencion) {
+            document.querySelector('[data-bs-target="#atencion"]').click();
+            setEditMode(atencion);
+          }
+        });
+      });
+      contenedor.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          eliminarAtencion(this.getAttribute('data-id'));
+        });
+      });
+    }
+
+    document.getElementById('aplicar-filtro-historial').addEventListener('click', () => {
+      const desde = document.getElementById('filtro-desde-historial').value;
+      const hasta = document.getElementById('filtro-hasta-historial').value;
+      cargarHistorial(desde || null, hasta || null);
+    });
+
+    // ========== MURAL ==========
+    document.getElementById('form-mural').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const contenido = document.getElementById('contenido-mural').value.trim();
+      const prioridad = document.getElementById('prioridad-mural').value;
+      if (!contenido || !currentUser) return;
+      const { error } = await supabaseClient.from('mural').insert([{
+        contenido,
+        prioridad,
+        user_id: currentUser.id
+      }]);
+      if (!error) {
+        document.getElementById('contenido-mural').value = '';
+        cargarAlertasMural();
+        mostrarToast('📌 Nota publicada en el mural.');
+      } else alert('Error al publicar.');
+    });
+
+    async function cargarAlertasMural() {
+      if (!currentUser) return;
+      const { data, error } = await supabaseClient.from('mural').select('*').order('created_at', { ascending: false });
+      const contenedor = document.getElementById('alertas-mural');
+      if (error || !data.length) {
+        contenedor.innerHTML = '';
+        return;
+      }
+      let html = '';
+      data.forEach(post => {
+        const clase = post.prioridad === 'Muy Urgente' ? 'muy-urgente' : (post.prioridad === 'Urgente' ? 'urgente' :
+          'normal');
+        html += `<div class="alert-card ${clase}">
+          <span class="priority-badge">${post.prioridad}</span>
+          <p class="mt-2 mb-1">${post.contenido}</p>
+          <div class="d-flex gap-2 mt-2">
+            <button class="btn btn-sm btn-primary tomar-btn" data-id="${post.id}"><i class="bi bi-check2-circle me-1"></i>Tomar atención</button>
+            <button class="btn btn-sm btn-outline-secondary cerrar-btn" data-id="${post.id}"><i class="bi bi-x-circle me-1"></i>Descartar</button>
+          </div>
+        </div>`;
+      });
+      contenedor.innerHTML = html;
+
+      contenedor.querySelectorAll('.tomar-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const post = data.find(p => p.id === this.getAttribute('data-id'));
+          if (post) {
+            document.querySelector('[data-bs-target="#atencion"]').click();
+            resetForm();
+            actividadInput.value = post.contenido;
+            prioridadInput.value = post.prioridad;
+            fechaInput.value = getFechaHoy();
+            muralIdInput.value = post.id;
+            formTitle.textContent = '📌 Nueva Atención desde Mural';
+          }
+        });
+      });
+      contenedor.querySelectorAll('.cerrar-btn').forEach(btn => {
+        btn.addEventListener('click', async function() {
+          await supabaseClient.from('mural').delete().eq('id', this.getAttribute('data-id'));
+          cargarAlertasMural();
+        });
+      });
+    }
+
+    // ========== EXPORTACIÓN ==========
+    async function obtenerDatosReporte() {
+      if (!currentUser) return [];
+      const desde = document.getElementById('filtro-desde-reporte').value;
+      const hasta = document.getElementById('filtro-hasta-reporte').value;
+      if (!desde || !hasta) {
+        mostrarToast('Seleccione ambas fechas del rango.', true);
+        return [];
+      }
+      if (hasta < desde) {
+        mostrarToast('La fecha final no puede ser anterior a la inicial.', true);
+        return [];
+      }
+      if (hasta > getFechaHoy() || desde > getFechaHoy()) {
+        mostrarToast('Las fechas no pueden ser futuras.', true);
+        return [];
+      }
+      let query = supabaseClient.from('atenciones').select('*').order('fecha', { ascending: true });
+      query = query.gte('fecha', desde).lte('fecha', hasta);
+      const { data, error } = await query;
+      if (error) {
+        mostrarToast('Error al obtener datos del reporte.', true);
+        return [];
+      }
+      return data;
+    }
+
+    function obtenerRangoFechas() {
+      return {
+        desde: document.getElementById('filtro-desde-reporte').value,
+        hasta: document.getElementById('filtro-hasta-reporte').value
+      };
+    }
+
+    // EXCEL
+    document.getElementById('btn-excel').addEventListener('click', async () => {
+      const data = await obtenerDatosReporte();
+      if (!data.length) {
+        mostrarToast('No hay atenciones en el rango seleccionado.', true);
+        return;
+      }
+      const { desde, hasta } = obtenerRangoFechas();
+      const periodo = `${formatearFecha(desde)} - ${formatearFecha(hasta)}`;
+      const titulo = `ACTIVIDADES DESARROLLADAS POR EL LOC. JUAN CARLOS CONDOR IRIGOIN EN EL PERIODO DE ${periodo}`;
+
+      const ws_data = [
+        [titulo],
+        ['Fecha', 'Unidad/Departamento', 'Actividad', 'Prioridad', 'Estado']
+      ];
+      data.forEach(row => {
+        ws_data.push([
+          formatearFecha(row.fecha),
+          row.unidad_departamento,
+          row.actividad,
+          row.prioridad || 'Normal',
+          row.estado || 'Atendido'
+        ]);
+      });
+
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet(ws_data);
+      ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 4 } }];
+      ws['!cols'] = [{ wch: 15 }, { wch: 30 }, { wch: 60 }, { wch: 15 }, { wch: 15 }];
+      XLSX.utils.book_append_sheet(wb, ws, "Actividades");
+      XLSX.writeFile(wb, `Actividades Loc Juan Carlos Condor al ${getFechaHoy().replace(/-/g, '')}.xlsx`);
+      mostrarToast('📊 Reporte Excel generado correctamente.');
+    });
+
+    // PDF
+    document.getElementById('btn-pdf').addEventListener('click', async () => {
+      const data = await obtenerDatosReporte();
+      if (!data.length) {
+        mostrarToast('No hay atenciones en el rango seleccionado.', true);
+        return;
+      }
+      const { desde, hasta } = obtenerRangoFechas();
+      const periodo = `${formatearFecha(desde)} - ${formatearFecha(hasta)}`;
+      const titulo = `ACTIVIDADES DESARROLLADAS POR EL LOC. JUAN CARLOS CONDOR IRIGOIN EN EL PERIODO DE ${periodo}`;
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('landscape', 'mm', 'a4');
+      const pageWidth = doc.internal.pageSize.width;
+
+      doc.setFontSize(14);
+      let fontSize = 14;
+      doc.setFontSize(fontSize);
+      while (doc.getTextWidth(titulo) > pageWidth - 20 && fontSize > 8) {
+        fontSize--;
+        doc.setFontSize(fontSize);
+      }
+      doc.text(titulo, pageWidth / 2, 15, { align: 'center' });
+
+      const rows = data.map(row => [
+        formatearFecha(row.fecha),
+        row.unidad_departamento,
+        row.actividad,
+        row.prioridad || 'Normal',
+        row.estado || 'Atendido'
+      ]);
+
+      doc.autoTable({
+        head: [['Fecha', 'Unidad/Departamento', 'Actividad', 'Prioridad', 'Estado']],
+        body: rows,
+        startY: 25,
+        styles: { fontSize: 8, cellPadding: 2 },
+        headStyles: { fillColor: [21, 82, 53] },
+        alternateRowStyles: { fillColor: [241, 245, 249] },
+        margin: { top: 30 }
+      });
+
+      doc.save(`Actividades Loc Juan Carlos Condor al ${getFechaHoy().replace(/-/g, '')}.pdf`);
+      mostrarToast('📄 Reporte PDF generado correctamente.');
+    });
+  </script>
+</body>
+</html>
