@@ -487,6 +487,45 @@
       color: var(--green-button-primary);
     }
 
+    /* ===== NUEVOS ESTILOS PARA MODO OSCURO (SOLICITADOS) ===== */
+    body.dark-mode .card-formal h4 {
+      color: var(--gold-accent) !important;
+    }
+
+    body.dark-mode #reporte .text-muted {
+      color: var(--gold-accent) !important;
+    }
+
+    body.dark-mode #contenido-mural::placeholder {
+      color: white !important;
+      opacity: 1;
+    }
+
+    body.dark-mode #login-email::placeholder,
+    body.dark-mode #login-password::placeholder,
+    body.dark-mode #reg-email::placeholder,
+    body.dark-mode #reg-dni::placeholder {
+      color: white !important;
+      opacity: 1;
+    }
+
+    body.dark-mode .bg-secondary-soft .text-muted {
+      color: white !important;
+    }
+
+    body.dark-mode #user-info {
+      color: white !important;
+    }
+
+    body.dark-mode .edit-btn {
+      border-color: white !important;
+      color: white !important;
+    }
+    body.dark-mode .edit-btn:hover {
+      background-color: white !important;
+      color: #1e2d26 !important;
+    }
+
     @media (max-width: 576px) {
       .login-container {
         margin: 30px 15px;
