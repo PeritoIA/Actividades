@@ -4,21 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Soporte Técnico – PNP</title>
-  <!-- Bootstrap 5 + Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
-  <!-- Librerías externas -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-  </script>
-  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js">
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js">
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
   <style>
-    /* ===== PALETA EXACTA (extraída de la imagen) ===== */
     :root {
       --green-header-top: #0B3D26;
       --green-header-mid: #1D6342;
@@ -62,11 +55,7 @@
       --blue-link-hover: #93bbfc;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       background: var(--bg-page);
@@ -76,9 +65,7 @@
       transition: background 0.3s, color 0.3s;
     }
 
-    .hidden {
-      display: none !important;
-    }
+    .hidden { display: none !important; }
 
     .card-formal {
       background: var(--bg-card);
@@ -137,14 +124,9 @@
       gap: 10px;
     }
 
-    .navbar-formal .navbar-brand img {
-      height: 40px;
-      width: auto;
-    }
+    .navbar-formal .navbar-brand img { height: 40px; width: auto; }
 
-    body.dark-mode .navbar-formal .navbar-brand {
-      color: var(--gold-accent);
-    }
+    body.dark-mode .navbar-formal .navbar-brand { color: var(--gold-accent); }
 
     .nav-tabs .nav-link {
       color: var(--text-muted);
@@ -189,9 +171,7 @@
       background-color: var(--green-button-hover);
       transform: translateY(-2px);
     }
-    .btn-primary:active {
-      transform: translateY(0);
-    }
+    .btn-primary:active { transform: translateY(0); }
 
     .btn-success {
       background-color: var(--green-button-primary);
@@ -229,8 +209,7 @@
       color: var(--text-white);
     }
 
-    .form-control,
-    .form-select {
+    .form-control, .form-select {
       border: 1px solid var(--border-input);
       border-radius: 10px;
       padding: 0.65rem 1rem;
@@ -238,26 +217,20 @@
       color: var(--text-primary);
       transition: 0.2s;
     }
-    .form-control:focus,
-    .form-select:focus {
+    .form-control:focus, .form-select:focus {
       border-color: var(--green-button-primary);
       box-shadow: 0 0 0 4px rgba(21, 82, 53, 0.15);
     }
 
-    .form-label {
-      color: var(--text-primary);
-      font-weight: 600;
-    }
+    .form-label { color: var(--text-primary); font-weight: 600; }
 
-    a,
-    .link {
+    a, .link {
       color: var(--blue-link);
       text-decoration: none;
       font-weight: 500;
       transition: color 0.2s;
     }
-    a:hover,
-    .link:hover {
+    a:hover, .link:hover {
       color: var(--blue-link-hover);
       text-decoration: underline;
     }
@@ -281,77 +254,10 @@
       padding: 0.75rem 1rem;
       border-bottom: 1px solid var(--border-input);
     }
-    .table-formal tr:hover td {
-      background: rgba(21, 82, 53, 0.06);
-    }
-    body.dark-mode .table-formal tr:hover td {
-      background: rgba(197, 146, 24, 0.08);
-    }
+    .table-formal tr:hover td { background: rgba(21, 82, 53, 0.06); }
+    body.dark-mode .table-formal tr:hover td { background: rgba(197, 146, 24, 0.08); }
 
-    .alert-panel {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-    .alert-card {
-      background: var(--bg-card);
-      border-radius: 16px;
-      box-shadow: var(--shadow-card);
-      padding: 1.2rem;
-      min-width: 260px;
-      flex: 1 1 280px;
-      border-left: 6px solid;
-      transition: 0.2s;
-    }
-    .alert-card.normal {
-      border-left-color: var(--green-button-primary);
-    }
-    .alert-card.urgente {
-      border-left-color: var(--gold-accent);
-    }
-    .alert-card.muy-urgente {
-      border-left-color: #b91c1c;
-    }
-
-    .priority-badge {
-      display: inline-block;
-      padding: 0.2rem 0.8rem;
-      border-radius: 30px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-    .alert-card.normal .priority-badge {
-      background: #e6f4ea;
-      color: #155235;
-    }
-    .alert-card.urgente .priority-badge {
-      background: #fef7e0;
-      color: #b7950b;
-    }
-    .alert-card.muy-urgente .priority-badge {
-      background: #fce8e6;
-      color: #991b1b;
-    }
-    body.dark-mode .alert-card.normal .priority-badge {
-      background: rgba(21, 82, 53, 0.2);
-      color: #6fcf97;
-    }
-    body.dark-mode .alert-card.urgente .priority-badge {
-      background: rgba(197, 146, 24, 0.2);
-      color: #f2c94c;
-    }
-    body.dark-mode .alert-card.muy-urgente .priority-badge {
-      background: rgba(185, 28, 28, 0.2);
-      color: #f87171;
-    }
-
-    .login-container {
-      max-width: 460px;
-      margin: 60px auto;
-    }
+    .login-container { max-width: 460px; margin: 60px auto; }
     .login-container .card-formal {
       padding: 0;
       overflow: hidden;
@@ -363,16 +269,10 @@
       margin: 0;
       padding: 28px 16px 20px;
     }
-    .login-container .card-formal .header-banner img {
-      max-height: 85px;
-    }
-    .login-container .card-formal .header-banner p {
-      font-size: 1.3rem;
-    }
+    .login-container .card-formal .header-banner img { max-height: 85px; }
+    .login-container .card-formal .header-banner p { font-size: 1.3rem; }
 
-    .login-body {
-      padding: 2rem 2rem 1.5rem;
-    }
+    .login-body { padding: 2rem 2rem 1.5rem; }
 
     .login-container .nav-pills .nav-link {
       border-radius: 30px;
@@ -410,9 +310,7 @@
       transition: opacity 0.3s;
       font-weight: 500;
     }
-    .toast.error {
-      border-left-color: #b91c1c;
-    }
+    .toast.error { border-left-color: #b91c1c; }
 
     #inactivity-banner {
       position: fixed;
@@ -435,13 +333,8 @@
       color: var(--text-primary);
       border-radius: 0 0 20px 20px;
     }
-    #inactivity-banner.show {
-      transform: translateY(0);
-    }
-    .inactivity-banner-content i {
-      font-size: 1.5rem;
-      color: var(--gold-accent);
-    }
+    #inactivity-banner.show { transform: translateY(0); }
+    .inactivity-banner-content i { font-size: 1.5rem; color: var(--gold-accent); }
     #countdown-timer {
       font-weight: 700;
       color: #b91c1c;
@@ -487,36 +380,64 @@
       color: var(--green-button-primary);
     }
 
-    /* ===== NUEVOS ESTILOS PARA MODO OSCURO (SOLICITADOS) ===== */
-    body.dark-mode .card-formal h4 {
-      color: var(--gold-accent) !important;
+    .welcome-badge {
+      display: inline-block;
+      background: rgba(197, 146, 24, 0.15);
+      color: var(--gold-accent);
+      padding: 0.3rem 0.9rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    body.dark-mode .welcome-badge { background: rgba(197, 146, 24, 0.25); }
+
+    .sello-preview {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background: var(--bg-card-secondary);
+      border-radius: 12px;
+      margin-top: 1rem;
+    }
+    .sello-preview img {
+      max-height: 200px;
+      max-width: 200px;
     }
 
-    body.dark-mode #reporte .text-muted {
-      color: var(--gold-accent) !important;
+    .en-construccion {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    .en-construccion i {
+      font-size: 4rem;
+      color: var(--gold-accent);
+      margin-bottom: 1rem;
+    }
+    .en-construccion h5 {
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .en-construccion p {
+      color: var(--text-muted);
+      margin: 0;
     }
 
-    body.dark-mode #contenido-mural::placeholder {
-      color: white !important;
-      opacity: 1;
-    }
-
+    body.dark-mode .card-formal h4 { color: var(--gold-accent) !important; }
+    body.dark-mode #reporte .text-muted { color: var(--gold-accent) !important; }
     body.dark-mode #login-email::placeholder,
     body.dark-mode #login-password::placeholder,
     body.dark-mode #reg-email::placeholder,
-    body.dark-mode #reg-dni::placeholder {
+    body.dark-mode #reg-dni::placeholder,
+    body.dark-mode #reg-nombres::placeholder,
+    body.dark-mode #reg-celular::placeholder {
       color: white !important;
       opacity: 1;
     }
-
-    body.dark-mode .bg-secondary-soft .text-muted {
-      color: white !important;
-    }
-
-    body.dark-mode #user-info {
-      color: white !important;
-    }
-
+    body.dark-mode .bg-secondary-soft .text-muted { color: white !important; }
+    body.dark-mode #user-info { color: white !important; }
     body.dark-mode .edit-btn {
       border-color: white !important;
       color: white !important;
@@ -527,21 +448,11 @@
     }
 
     @media (max-width: 576px) {
-      .login-container {
-        margin: 30px 15px;
-      }
-      .login-body {
-        padding: 1.5rem;
-      }
-      .header-banner img {
-        max-height: 70px;
-      }
-      .navbar-formal .navbar-brand {
-        font-size: 1rem;
-      }
-      .navbar-formal .navbar-brand img {
-        height: 32px;
-      }
+      .login-container { margin: 30px 15px; }
+      .login-body { padding: 1.5rem; }
+      .header-banner img { max-height: 70px; }
+      .navbar-formal .navbar-brand { font-size: 1rem; }
+      .navbar-formal .navbar-brand img { height: 32px; }
       #inactivity-banner {
         flex-direction: column;
         align-items: flex-start;
@@ -556,7 +467,7 @@
   <div id="inactivity-banner">
     <div class="inactivity-banner-content">
       <i class="bi bi-hourglass-split"></i>
-      <span>¿Aún estás ahí? Tu sesión se cerrará en <span id="countdown-timer">03:00</span> minutos por inactividad.</span>
+      <span>¿Aún estás ahí? Tu sesión se cerrará en <span id="countdown-timer">03:00</span> minutos.</span>
     </div>
     <div class="inactivity-banner-actions">
       <button class="btn btn-sm btn-primary" id="extend-session-btn"><i class="bi bi-arrow-repeat me-1"></i>Extender</button>
@@ -590,7 +501,7 @@
                 <input type="email" id="login-email" class="form-control" placeholder="correo@ejemplo.com" />
               </div>
               <div class="mb-3 text-start">
-                <label class="form-label"><i class="bi bi-lock me-1"></i>Clave INICIAL (DNI)</label>
+                <label class="form-label"><i class="bi bi-lock me-1"></i>Clave (DNI)</label>
                 <input type="password" id="login-password" class="form-control" placeholder="12345678" maxlength="8" />
               </div>
               <button class="btn btn-primary w-100" id="login-btn"><i class="bi bi-box-arrow-in-right me-2"></i>Ingresar</button>
@@ -598,15 +509,29 @@
             </div>
 
             <div class="tab-pane fade" id="register">
-              <div class="mb-3 text-start">
-                <label class="form-label"><i class="bi bi-envelope me-1"></i>Correo electrónico</label>
-                <input type="email" id="reg-email" class="form-control" placeholder="correo@ejemplo.com" />
+              <div class="row g-2">
+                <div class="col-12 mb-2">
+                  <label class="form-label"><i class="bi bi-envelope me-1"></i>Correo</label>
+                  <input type="email" id="reg-email" class="form-control" placeholder="correo@ejemplo.com" />
+                </div>
+                <div class="col-6 mb-2">
+                  <label class="form-label"><i class="bi bi-person-badge me-1"></i>DNI</label>
+                  <input type="text" id="reg-dni" class="form-control" placeholder="12345678" maxlength="8" />
+                </div>
+                <div class="col-6 mb-2">
+                  <label class="form-label"><i class="bi bi-phone me-1"></i>Celular</label>
+                  <input type="text" id="reg-celular" class="form-control" placeholder="987654321" maxlength="9" />
+                </div>
+                <div class="col-12 mb-2">
+                  <label class="form-label"><i class="bi bi-person me-1"></i>Nombres completos</label>
+                  <input type="text" id="reg-nombres" class="form-control" placeholder="Juan Carlos Condor Irigoin" />
+                </div>
+                <div class="col-12 mb-2">
+                  <label class="form-label"><i class="bi bi-calendar me-1"></i>Fecha de nacimiento</label>
+                  <input type="date" id="reg-fecha-nac" class="form-control" />
+                </div>
               </div>
-              <div class="mb-3 text-start">
-                <label class="form-label"><i class="bi bi-person-badge me-1"></i>DNI (8 dígitos)</label>
-                <input type="text" id="reg-dni" class="form-control" placeholder="12345678" maxlength="8" />
-              </div>
-              <button class="btn btn-success w-100" id="register-btn"><i class="bi bi-person-plus me-2"></i>Crear cuenta</button>
+              <button class="btn btn-success w-100 mt-2" id="register-btn"><i class="bi bi-person-plus me-2"></i>Crear cuenta</button>
               <div id="reg-error" class="text-danger mt-2 small"></div>
             </div>
           </div>
@@ -642,23 +567,24 @@
     </nav>
 
     <div class="container py-4">
-      <div id="alertas-mural" class="alert-panel"></div>
+      <div id="bienvenida" class="welcome-badge"></div>
 
       <ul class="nav nav-tabs mb-4">
         <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#atencion"><i class="bi bi-plus-circle me-1"></i>Nueva Atención</button></li>
         <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#historial"><i class="bi bi-list-ul me-1"></i>Historial</button></li>
-        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#mural"><i class="bi bi-pin-map me-1"></i>Mural</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#perfil"><i class="bi bi-person-circle me-1"></i>Mi Perfil</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#sello-tab"><i class="bi bi-award me-1"></i>Config. Sello</button></li>
         <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#reporte"><i class="bi bi-file-earmark-spreadsheet me-1"></i>Exportar</button></li>
       </ul>
 
       <div class="tab-content">
+        <!-- NUEVA ATENCIÓN -->
         <div class="tab-pane fade show active" id="atencion">
           <div class="card-formal">
             <h4 id="form-title" class="mb-3" style="font-weight: 700; color: var(--green-header-top);">Nueva Atención</h4>
             <form id="form-atencion">
               <input type="hidden" id="servicio" value="Soporte Técnico" />
               <input type="hidden" id="edit-id" value="" />
-              <input type="hidden" id="mural-id" value="" />
 
               <div class="row g-3 mb-3">
                 <div class="col-md-6">
@@ -707,6 +633,7 @@
           </div>
         </div>
 
+        <!-- HISTORIAL -->
         <div class="tab-pane fade" id="historial">
           <div class="card-formal">
             <h4 class="mb-3" style="font-weight: 700; color: var(--green-header-top);">Mis Atenciones</h4>
@@ -727,27 +654,52 @@
           </div>
         </div>
 
-        <div class="tab-pane fade" id="mural">
+        <!-- MI PERFIL -->
+        <div class="tab-pane fade" id="perfil">
           <div class="card-formal">
-            <h4 class="mb-3" style="font-weight: 700; color: var(--green-header-top);">Publicar en el Mural</h4>
-            <form id="form-mural">
-              <div class="mb-3">
-                <label class="form-label">Nota</label>
-                <input type="text" id="contenido-mural" class="form-control" placeholder="Escribe una nota..." required />
+            <h4 class="mb-3" style="font-weight: 700; color: var(--green-header-top);">Mi Perfil</h4>
+            <p class="text-muted small">Complete sus datos personales. Los datos del jefe se configuran en "Config. Sello".</p>
+            <form id="form-perfil">
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">DNI</label>
+                  <input type="text" class="form-control" id="perfil-dni" maxlength="8" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Celular</label>
+                  <input type="text" class="form-control" id="perfil-celular" maxlength="9" />
+                </div>
+                <div class="col-md-12">
+                  <label class="form-label">Nombres completos</label>
+                  <input type="text" class="form-control" id="perfil-nombres" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Fecha de nacimiento</label>
+                  <input type="date" class="form-control" id="perfil-fecha-nac" />
+                </div>
               </div>
-              <div class="mb-3">
-                <label class="form-label">Prioridad</label>
-                <select class="form-select" id="prioridad-mural">
-                  <option value="Normal">Normal</option>
-                  <option value="Urgente">Urgente</option>
-                  <option value="Muy Urgente">Muy Urgente</option>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary"><i class="bi bi-send me-1"></i>Publicar</button>
+              <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Guardar cambios</button>
+              <div id="msg-perfil" class="mt-2 small"></div>
             </form>
           </div>
         </div>
 
+        <!-- CONFIGURACIÓN DEL SELLO (EN CONSTRUCCIÓN) -->
+        <div class="tab-pane fade" id="sello-tab">
+          <div class="card-formal">
+            <h4 class="mb-3" style="font-weight: 700; color: var(--green-header-top);">Configuración del Sello</h4>
+            <div class="en-construccion">
+              <i class="bi bi-tools"></i>
+              <h5>🚧 En construcción</h5>
+              <p>Esta sección estará disponible próximamente.</p>
+            </div>
+            <div class="sello-preview">
+              <img src="sello.png" alt="Sello PNP" onerror="this.style.display='none'" />
+            </div>
+          </div>
+        </div>
+
+        <!-- EXPORTAR -->
         <div class="tab-pane fade" id="reporte">
           <div class="card-formal">
             <h4 class="mb-3" style="font-weight: 700; color: var(--green-header-top);">Exportar Atenciones</h4>
@@ -766,6 +718,12 @@
                 <button class="btn btn-danger" id="btn-pdf"><i class="bi bi-file-earmark-pdf me-1"></i>PDF</button>
               </div>
             </div>
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" id="incluir-sello" checked />
+              <label class="form-check-label fw-semibold" for="incluir-sello">
+                Incluir sello policial en el reporte
+              </label>
+            </div>
             <div id="msg-reporte" class="mt-2 small"></div>
           </div>
         </div>
@@ -773,8 +731,7 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // ========== CONFIGURACIÓN ==========
     const SUPABASE_URL = 'https://ehonufkjsyrytgoramgg.supabase.co';
@@ -785,11 +742,12 @@
     const appContainer = document.getElementById('app-container');
     const userInfo = document.getElementById('user-info');
     const statusDiv = document.getElementById('connection-status');
+    const bienvenidaDiv = document.getElementById('bienvenida');
     let currentUser = null;
+    let perfilActual = null;
 
     // ========== TEMA ==========
     const themeToggleBtn = document.getElementById('theme-toggle-btn');
-
     function setTheme(isDark) {
       if (isDark) {
         document.body.classList.add('dark-mode');
@@ -801,9 +759,7 @@
         localStorage.setItem('theme', 'light');
       }
     }
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') setTheme(true);
-    else setTheme(false);
+    setTheme(localStorage.getItem('theme') === 'dark');
     themeToggleBtn.addEventListener('click', () => setTheme(!document.body.classList.contains('dark-mode')));
 
     // ========== TOAST ==========
@@ -827,11 +783,10 @@
       }
     })();
 
-    // ========== CONTROL DE INACTIVIDAD ==========
+    // ========== INACTIVIDAD ==========
     const INACTIVITY_WARNING_DELAY = 120000;
     const LOGOUT_DELAY = 180000;
     const COUNTDOWN_TOTAL_SECONDS = 180;
-
     let inactivityWarningTimeout = null;
     let logoutTimeout = null;
     let countdownInterval = null;
@@ -845,96 +800,62 @@
     function updateCountdownDisplay() {
       const mins = Math.floor(countdownSeconds / 60);
       const secs = countdownSeconds % 60;
-      const display = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-      countdownTimer.textContent = display;
-      const progress = (countdownSeconds / COUNTDOWN_TOTAL_SECONDS) * 100;
-      progressBar.style.width = progress + '%';
+      countdownTimer.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      progressBar.style.width = ((countdownSeconds / COUNTDOWN_TOTAL_SECONDS) * 100) + '%';
     }
 
     function showInactivityWarning() {
       inactivityBanner.classList.add('show');
       countdownSeconds = COUNTDOWN_TOTAL_SECONDS;
       updateCountdownDisplay();
-
       countdownInterval = setInterval(() => {
         countdownSeconds--;
         updateCountdownDisplay();
-        if (countdownSeconds <= 0) {
-          clearInterval(countdownInterval);
-          countdownInterval = null;
-        }
+        if (countdownSeconds <= 0) { clearInterval(countdownInterval); countdownInterval = null; }
       }, 1000);
-
       logoutTimeout = setTimeout(() => {
         stopInactivityWatch();
-        logout().then(() => {
-          mostrarToast('🔒 Sesión cerrada por inactividad.', true);
-        });
+        logout().then(() => mostrarToast('🔒 Sesión cerrada por inactividad.', true));
       }, LOGOUT_DELAY);
     }
 
     function hideInactivityWarning() {
       inactivityBanner.classList.remove('show');
-      if (countdownInterval) {
-        clearInterval(countdownInterval);
-        countdownInterval = null;
-      }
-      if (logoutTimeout) {
-        clearTimeout(logoutTimeout);
-        logoutTimeout = null;
-      }
+      if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
+      if (logoutTimeout) { clearTimeout(logoutTimeout); logoutTimeout = null; }
       progressBar.style.width = '100%';
       countdownSeconds = COUNTDOWN_TOTAL_SECONDS;
       updateCountdownDisplay();
     }
 
     function resetInactivityTimer() {
-      if (inactivityWarningTimeout) {
-        clearTimeout(inactivityWarningTimeout);
-        inactivityWarningTimeout = null;
-      }
+      if (inactivityWarningTimeout) { clearTimeout(inactivityWarningTimeout); inactivityWarningTimeout = null; }
       hideInactivityWarning();
-      if (currentUser) {
-        inactivityWarningTimeout = setTimeout(showInactivityWarning, INACTIVITY_WARNING_DELAY);
-      }
+      if (currentUser) inactivityWarningTimeout = setTimeout(showInactivityWarning, INACTIVITY_WARNING_DELAY);
     }
 
     function startInactivityWatch() {
       resetInactivityTimer();
-      window.addEventListener('mousemove', resetInactivityTimer);
-      window.addEventListener('keydown', resetInactivityTimer);
-      window.addEventListener('click', resetInactivityTimer);
-      window.addEventListener('scroll', resetInactivityTimer);
-      window.addEventListener('touchstart', resetInactivityTimer);
+      ['mousemove','keydown','click','scroll','touchstart'].forEach(ev =>
+        window.addEventListener(ev, resetInactivityTimer));
     }
 
     function stopInactivityWatch() {
-      if (inactivityWarningTimeout) {
-        clearTimeout(inactivityWarningTimeout);
-        inactivityWarningTimeout = null;
-      }
+      if (inactivityWarningTimeout) { clearTimeout(inactivityWarningTimeout); inactivityWarningTimeout = null; }
       hideInactivityWarning();
-      window.removeEventListener('mousemove', resetInactivityTimer);
-      window.removeEventListener('keydown', resetInactivityTimer);
-      window.removeEventListener('click', resetInactivityTimer);
-      window.removeEventListener('scroll', resetInactivityTimer);
-      window.removeEventListener('touchstart', resetInactivityTimer);
+      ['mousemove','keydown','click','scroll','touchstart'].forEach(ev =>
+        window.removeEventListener(ev, resetInactivityTimer));
     }
 
-    extendSessionBtn.addEventListener('click', () => {
-      resetInactivityTimer();
-    });
+    extendSessionBtn.addEventListener('click', resetInactivityTimer);
 
-    // ========== AUTENTICACIÓN ==========
+    // ========== AUTH ==========
     async function login() {
       const email = document.getElementById('login-email').value.trim();
       const password = document.getElementById('login-password').value.trim();
       const errorDiv = document.getElementById('login-error');
       errorDiv.textContent = '';
-      if (!email || !password) {
-        errorDiv.textContent = 'Complete todos los campos.';
-        return;
-      }
+      if (!email || !password) { errorDiv.textContent = 'Complete todos los campos.'; return; }
       const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
       if (error) errorDiv.textContent = 'Credenciales incorrectas.';
     }
@@ -942,35 +863,115 @@
     async function register() {
       const email = document.getElementById('reg-email').value.trim();
       const dni = document.getElementById('reg-dni').value.trim();
+      const celular = document.getElementById('reg-celular').value.trim();
+      const nombres = document.getElementById('reg-nombres').value.trim();
+      const fechaNac = document.getElementById('reg-fecha-nac').value;
       const errorDiv = document.getElementById('reg-error');
       errorDiv.textContent = '';
-      if (!email || !dni || dni.length !== 8) {
-        errorDiv.textContent = 'Ingrese un correo válido y DNI de 8 dígitos.';
+
+      if (!email || !dni || dni.length !== 8 || !nombres) {
+        errorDiv.textContent = 'Complete al menos correo, DNI (8 dígitos) y nombres.';
         return;
       }
+
+      const { data: existente } = await supabaseClient
+        .from('personas')
+        .select('id')
+        .eq('dni', dni)
+        .maybeSingle();
+
+      if (existente) {
+        errorDiv.innerHTML = '⚠️ El DNI <b>' + dni + '</b> ya está registrado.<br>Contacte al <b>988932324</b> para una corrección.';
+        return;
+      }
+
       const { error } = await supabaseClient.auth.signUp({
         email,
         password: dni,
-        options: { data: { dni } }
+        options: {
+          data: {
+            dni,
+            nombres_completos: nombres,
+            fecha_nacimiento: fechaNac,
+            celular
+          }
+        }
       });
-      if (error) errorDiv.textContent = 'Error al registrar.';
-      else {
+
+      if (error) {
+        if (error.message && (error.message.includes('DNI_DUPLICADO') || error.message.toLowerCase().includes('duplicate') || error.message.toLowerCase().includes('database error'))) {
+          errorDiv.innerHTML = '⚠️ El DNI <b>' + dni + '</b> ya está registrado.<br>Contacte al <b>988932324</b> para una corrección.';
+        } else {
+          errorDiv.textContent = 'Error: ' + error.message;
+        }
+      } else {
         alert('✅ Cuenta creada. Ahora inicie sesión.');
         document.querySelector('[data-bs-target="#login"]').click();
       }
     }
 
-    async function logout() {
-      await supabaseClient.auth.signOut();
+    async function logout() { await supabaseClient.auth.signOut(); }
+
+    // ========== CARGAR PERFIL ==========
+    async function cargarPerfil() {
+      if (!currentUser) return;
+      const { data, error } = await supabaseClient
+        .from('personas')
+        .select('*')
+        .eq('id', currentUser.id)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error cargando perfil:', error);
+        return;
+      }
+
+      if (!data) {
+        const meta = currentUser.user_metadata || {};
+        const { data: nueva, error: errInsert } = await supabaseClient
+          .from('personas')
+          .insert({
+            id: currentUser.id,
+            dni: meta.dni || '',
+            nombres_completos: meta.nombres_completos || '',
+            fecha_nacimiento: meta.fecha_nacimiento || null,
+            celular: meta.celular || ''
+          })
+          .select()
+          .single();
+        if (errInsert) { console.error('Error creando perfil:', errInsert); return; }
+        perfilActual = nueva;
+      } else {
+        perfilActual = data;
+      }
+
+      document.getElementById('perfil-dni').value = perfilActual.dni || '';
+      document.getElementById('perfil-celular').value = perfilActual.celular || '';
+      document.getElementById('perfil-nombres').value = perfilActual.nombres_completos || '';
+      document.getElementById('perfil-fecha-nac').value = perfilActual.fecha_nacimiento || '';
+
+      actualizarBienvenida();
+    }
+
+    function actualizarBienvenida() {
+      const nombreCompleto = perfilActual?.nombres_completos
+        || currentUser?.user_metadata?.nombres_completos
+        || '';
+      if (nombreCompleto) {
+        bienvenidaDiv.textContent = `👋 Bienvenido(a), ${nombreCompleto}`;
+        userInfo.textContent = `Hola, ${nombreCompleto.split(' ')[0]}`;
+      } else {
+        bienvenidaDiv.textContent = `👋 Bienvenido(a), ${currentUser?.email || 'Usuario'}`;
+        userInfo.textContent = currentUser?.email || '';
+      }
     }
 
     function mostrarDashboard(user) {
       currentUser = user;
-      userInfo.textContent = `DNI: ${user.user_metadata?.dni || ''}`;
       authContainer.classList.add('hidden');
       appContainer.classList.remove('hidden');
       inicializarExportTab();
-      cargarAlertasMural();
+      cargarPerfil();
       cargarHistorial();
       startInactivityWatch();
     }
@@ -980,6 +981,7 @@
       authContainer.classList.remove('hidden');
       appContainer.classList.add('hidden');
       currentUser = null;
+      perfilActual = null;
     }
 
     supabaseClient.auth.onAuthStateChange((event, session) => {
@@ -1005,45 +1007,30 @@
       const [year, month, day] = fechaStr.split('-');
       return `${day}/${month}/${year}`;
     }
-
     function getFechaHoy() {
       const hoy = new Date();
-      const dia = String(hoy.getDate()).padStart(2, '0');
-      const mes = String(hoy.getMonth() + 1).padStart(2, '0');
-      const anio = hoy.getFullYear();
-      return `${anio}-${mes}-${dia}`;
+      return `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`;
     }
 
-    // ========== EXPORTAR ==========
+    // ========== EXPORT TAB INIT ==========
     function inicializarExportTab() {
       const hoy = getFechaHoy();
       const inputDesde = document.getElementById('filtro-desde-reporte');
       const inputHasta = document.getElementById('filtro-hasta-reporte');
-
-      inputDesde.value = hoy;
-      inputDesde.max = hoy;
-      inputHasta.value = hoy;
-      inputHasta.min = hoy;
-      inputHasta.max = hoy;
-
+      inputDesde.value = hoy; inputDesde.max = hoy;
+      inputHasta.value = hoy; inputHasta.min = hoy; inputHasta.max = hoy;
       inputDesde.addEventListener('change', () => {
-        const desdeVal = inputDesde.value;
-        if (desdeVal) {
-          inputHasta.min = desdeVal;
-          if (inputHasta.value && inputHasta.value < desdeVal) {
-            inputHasta.value = desdeVal;
-          }
+        if (inputDesde.value) {
+          inputHasta.min = inputDesde.value;
+          if (inputHasta.value && inputHasta.value < inputDesde.value) inputHasta.value = inputDesde.value;
         }
       });
-
       inputHasta.addEventListener('change', () => {
-        const hastaVal = inputHasta.value;
-        const desdeVal = inputDesde.value;
-        if (hastaVal && desdeVal && hastaVal < desdeVal) {
-          inputHasta.value = desdeVal;
+        if (inputHasta.value && inputDesde.value && inputHasta.value < inputDesde.value) {
+          inputHasta.value = inputDesde.value;
           mostrarToast('La fecha final no puede ser anterior a la inicial.', true);
         }
-        if (hastaVal > getFechaHoy()) {
+        if (inputHasta.value > getFechaHoy()) {
           inputHasta.value = getFechaHoy();
           mostrarToast('La fecha final no puede ser superior a hoy.', true);
         }
@@ -1053,7 +1040,6 @@
     // ========== ATENCIONES ==========
     const formAtencion = document.getElementById('form-atencion');
     const editIdInput = document.getElementById('edit-id');
-    const muralIdInput = document.getElementById('mural-id');
     const servicioInput = document.getElementById('servicio');
     const unidadInput = document.getElementById('unidad');
     const actividadInput = document.getElementById('actividad');
@@ -1066,24 +1052,18 @@
     const msgDiv = document.getElementById('msg-atencion');
 
     fechaInput.max = getFechaHoy();
-    document.getElementById('btn-hoy').addEventListener('click', () => {
-      fechaInput.value = getFechaHoy();
-    });
-
-    function setFechaPorDefecto() {
-      if (!editIdInput.value) fechaInput.value = getFechaHoy();
-    }
+    document.getElementById('btn-hoy').addEventListener('click', () => { fechaInput.value = getFechaHoy(); });
+    function setFechaPorDefecto() { if (!editIdInput.value) fechaInput.value = getFechaHoy(); }
     setFechaPorDefecto();
 
-    function setEditMode(atencion) {
-      editIdInput.value = atencion.id;
-      unidadInput.value = atencion.unidad_departamento || '';
-      actividadInput.value = atencion.actividad || '';
-      fechaInput.value = atencion.fecha || getFechaHoy();
-      prioridadInput.value = atencion.prioridad || 'Normal';
-      estadoInput.value = atencion.estado || 'Atendido';
+    function setEditMode(a) {
+      editIdInput.value = a.id;
+      unidadInput.value = a.unidad_departamento || '';
+      actividadInput.value = a.actividad || '';
+      fechaInput.value = a.fecha || getFechaHoy();
+      prioridadInput.value = a.prioridad || 'Normal';
+      estadoInput.value = a.estado || 'Atendido';
       servicioInput.value = 'Soporte Técnico';
-      muralIdInput.value = '';
       formTitle.textContent = '✏️ Editar Atención';
       submitBtn.textContent = 'Actualizar';
       cancelBtn.classList.remove('d-none');
@@ -1091,7 +1071,6 @@
 
     function resetForm() {
       editIdInput.value = '';
-      muralIdInput.value = '';
       formAtencion.reset();
       servicioInput.value = 'Soporte Técnico';
       prioridadInput.value = 'Normal';
@@ -1102,7 +1081,6 @@
       msgDiv.innerHTML = '';
       setFechaPorDefecto();
     }
-
     cancelBtn.addEventListener('click', resetForm);
 
     formAtencion.addEventListener('submit', async (e) => {
@@ -1110,61 +1088,40 @@
       const unidad = unidadInput.value.trim();
       const actividad = actividadInput.value.trim();
       const fecha = fechaInput.value;
-      const prioridad = prioridadInput.value;
-      const estado = estadoInput.value;
       const editId = editIdInput.value;
-      const muralId = muralIdInput.value;
-      const servicio = servicioInput.value;
-
-      if (!unidad || !actividad || !fecha) {
-        msgDiv.innerHTML = '<span class="text-danger">Complete todos los campos.</span>';
-        return;
-      }
-      if (new Date(fecha) > new Date().setHours(0, 0, 0, 0)) {
-        msgDiv.innerHTML = '<span class="text-danger">No se permiten fechas futuras.</span>';
-        return;
-      }
+      if (!unidad || !actividad || !fecha) { msgDiv.innerHTML = '<span class="text-danger">Complete todos los campos.</span>'; return; }
+      if (new Date(fecha) > new Date().setHours(0,0,0,0)) { msgDiv.innerHTML = '<span class="text-danger">No se permiten fechas futuras.</span>'; return; }
       if (!currentUser) return;
 
       const datos = {
-        servicio,
+        servicio: servicioInput.value,
         unidad_departamento: unidad,
         actividad,
         fecha,
-        prioridad,
-        estado,
+        prioridad: prioridadInput.value,
+        estado: estadoInput.value,
         user_id: currentUser.id
       };
+
       let error = null;
       if (editId) {
-        const { error: updateError } = await supabaseClient
-          .from('atenciones').update(datos).eq('id', editId).eq('user_id', currentUser.id);
-        error = updateError;
-        if (!error) mostrarToast('✅ Atención actualizada correctamente.');
+        const { error: e1 } = await supabaseClient.from('atenciones').update(datos).eq('id', editId).eq('user_id', currentUser.id);
+        error = e1;
+        if (!error) mostrarToast('✅ Atención actualizada.');
       } else {
-        const { error: insertError } = await supabaseClient
-          .from('atenciones').insert([datos]);
-        error = insertError;
-        if (!error) mostrarToast('✅ Atención registrada exitosamente.');
+        const { error: e2 } = await supabaseClient.from('atenciones').insert([datos]);
+        error = e2;
+        if (!error) mostrarToast('✅ Atención registrada.');
       }
-
       if (error) msgDiv.innerHTML = `<span class="text-danger">Error: ${error.message}</span>`;
-      else {
-        if (muralId) await supabaseClient.from('mural').delete().eq('id', muralId);
-        resetForm();
-        cargarAlertasMural();
-        cargarHistorial();
-      }
+      else { resetForm(); cargarHistorial(); }
     });
 
     async function eliminarAtencion(id) {
       if (!confirm('¿Eliminar esta atención?')) return;
       const { error } = await supabaseClient.from('atenciones').delete().eq('id', id).eq('user_id', currentUser.id);
       if (error) alert('Error al eliminar.');
-      else {
-        mostrarToast('🗑️ Atención eliminada.');
-        cargarHistorial();
-      }
+      else { mostrarToast('🗑️ Atención eliminada.'); cargarHistorial(); }
     }
 
     async function cargarHistorial(filtroDesde = null, filtroHasta = null) {
@@ -1174,14 +1131,8 @@
       if (filtroHasta) query = query.lte('fecha', filtroHasta);
       const { data, error } = await query;
       const contenedor = document.getElementById('lista-atenciones');
-      if (error) {
-        contenedor.innerHTML = '<p class="text-danger">Error al cargar historial.</p>';
-        return;
-      }
-      if (!data.length) {
-        contenedor.innerHTML = '<p class="text-muted">No hay atenciones registradas.</p>';
-        return;
-      }
+      if (error) { contenedor.innerHTML = '<p class="text-danger">Error al cargar historial.</p>'; return; }
+      if (!data.length) { contenedor.innerHTML = '<p class="text-muted">No hay atenciones registradas.</p>'; return; }
 
       let html = `<table class="table-formal"><thead><tr><th>Fecha</th><th>Unidad</th><th>Actividad</th><th>Prioridad</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>`;
       data.forEach(row => {
@@ -1202,17 +1153,12 @@
 
       contenedor.querySelectorAll('.edit-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-          const atencion = data.find(item => item.id === this.getAttribute('data-id'));
-          if (atencion) {
-            document.querySelector('[data-bs-target="#atencion"]').click();
-            setEditMode(atencion);
-          }
+          const a = data.find(i => i.id === this.getAttribute('data-id'));
+          if (a) { document.querySelector('[data-bs-target="#atencion"]').click(); setEditMode(a); }
         });
       });
       contenedor.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-          eliminarAtencion(this.getAttribute('data-id'));
-        });
+        btn.addEventListener('click', function() { eliminarAtencion(this.getAttribute('data-id')); });
       });
     }
 
@@ -1222,113 +1168,83 @@
       cargarHistorial(desde || null, hasta || null);
     });
 
-    // ========== MURAL ==========
-    document.getElementById('form-mural').addEventListener('submit', async (e) => {
+    // ========== PERFIL ==========
+    document.getElementById('form-perfil').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const contenido = document.getElementById('contenido-mural').value.trim();
-      const prioridad = document.getElementById('prioridad-mural').value;
-      if (!contenido || !currentUser) return;
-      const { error } = await supabaseClient.from('mural').insert([{
-        contenido,
-        prioridad,
-        user_id: currentUser.id
-      }]);
-      if (!error) {
-        document.getElementById('contenido-mural').value = '';
-        cargarAlertasMural();
-        mostrarToast('📌 Nota publicada en el mural.');
-      } else alert('Error al publicar.');
-    });
-
-    async function cargarAlertasMural() {
       if (!currentUser) return;
-      const { data, error } = await supabaseClient.from('mural').select('*').order('created_at', { ascending: false });
-      const contenedor = document.getElementById('alertas-mural');
-      if (error || !data.length) {
-        contenedor.innerHTML = '';
+
+      const nuevoDni = document.getElementById('perfil-dni').value.trim();
+      const msg = document.getElementById('msg-perfil');
+      msg.innerHTML = '';
+
+      if (nuevoDni && nuevoDni !== perfilActual?.dni) {
+        const { data: existente } = await supabaseClient
+          .from('personas')
+          .select('id')
+          .eq('dni', nuevoDni)
+          .neq('id', currentUser.id)
+          .maybeSingle();
+
+        if (existente) {
+          msg.innerHTML = '<span class="text-danger">⚠️ El DNI ya está registrado por otro usuario. Contacte al 988932324.</span>';
+          return;
+        }
+      }
+
+      const datos = {
+        id: currentUser.id,
+        dni: nuevoDni,
+        celular: document.getElementById('perfil-celular').value.trim(),
+        nombres_completos: document.getElementById('perfil-nombres').value.trim(),
+        fecha_nacimiento: document.getElementById('perfil-fecha-nac').value || null
+      };
+
+      const { error } = await supabaseClient.from('personas').upsert(datos);
+      if (error) {
+        if (error.message.toLowerCase().includes('duplicate') || error.message.toLowerCase().includes('unique')) {
+          msg.innerHTML = '<span class="text-danger">⚠️ El DNI ya está registrado. Contacte al 988932324.</span>';
+        } else {
+          msg.innerHTML = `<span class="text-danger">Error: ${error.message}</span>`;
+        }
         return;
       }
-      let html = '';
-      data.forEach(post => {
-        const clase = post.prioridad === 'Muy Urgente' ? 'muy-urgente' : (post.prioridad === 'Urgente' ? 'urgente' :
-          'normal');
-        html += `<div class="alert-card ${clase}">
-          <span class="priority-badge">${post.prioridad}</span>
-          <p class="mt-2 mb-1">${post.contenido}</p>
-          <div class="d-flex gap-2 mt-2">
-            <button class="btn btn-sm btn-primary tomar-btn" data-id="${post.id}"><i class="bi bi-check2-circle me-1"></i>Tomar atención</button>
-            <button class="btn btn-sm btn-outline-secondary cerrar-btn" data-id="${post.id}"><i class="bi bi-x-circle me-1"></i>Descartar</button>
-          </div>
-        </div>`;
-      });
-      contenedor.innerHTML = html;
 
-      contenedor.querySelectorAll('.tomar-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const post = data.find(p => p.id === this.getAttribute('data-id'));
-          if (post) {
-            document.querySelector('[data-bs-target="#atencion"]').click();
-            resetForm();
-            actividadInput.value = post.contenido;
-            prioridadInput.value = post.prioridad;
-            fechaInput.value = getFechaHoy();
-            muralIdInput.value = post.id;
-            formTitle.textContent = '📌 Nueva Atención desde Mural';
-          }
-        });
-      });
-      contenedor.querySelectorAll('.cerrar-btn').forEach(btn => {
-        btn.addEventListener('click', async function() {
-          await supabaseClient.from('mural').delete().eq('id', this.getAttribute('data-id'));
-          cargarAlertasMural();
-        });
-      });
-    }
+      await cargarPerfil();
+      msg.innerHTML = '<span class="text-success">✅ Perfil actualizado correctamente.</span>';
+      mostrarToast('✅ Perfil actualizado.');
+    });
 
-    // ========== EXPORTACIÓN ==========
+    // ========== EXPORTAR ==========
     async function obtenerDatosReporte() {
       if (!currentUser) return [];
       const desde = document.getElementById('filtro-desde-reporte').value;
       const hasta = document.getElementById('filtro-hasta-reporte').value;
-      if (!desde || !hasta) {
-        mostrarToast('Seleccione ambas fechas del rango.', true);
-        return [];
-      }
-      if (hasta < desde) {
-        mostrarToast('La fecha final no puede ser anterior a la inicial.', true);
-        return [];
-      }
-      if (hasta > getFechaHoy() || desde > getFechaHoy()) {
-        mostrarToast('Las fechas no pueden ser futuras.', true);
-        return [];
-      }
-      let query = supabaseClient.from('atenciones').select('*').order('fecha', { ascending: true });
-      query = query.gte('fecha', desde).lte('fecha', hasta);
-      const { data, error } = await query;
-      if (error) {
-        mostrarToast('Error al obtener datos del reporte.', true);
-        return [];
-      }
+      if (!desde || !hasta) { mostrarToast('Seleccione ambas fechas.', true); return []; }
+      if (hasta < desde) { mostrarToast('Fecha final anterior a la inicial.', true); return []; }
+      if (hasta > getFechaHoy() || desde > getFechaHoy()) { mostrarToast('Las fechas no pueden ser futuras.', true); return []; }
+      const { data, error } = await supabaseClient.from('atenciones')
+        .select('*').gte('fecha', desde).lte('fecha', hasta).order('fecha', { ascending: true });
+      if (error) { mostrarToast('Error al obtener datos.', true); return []; }
       return data;
     }
 
-    function obtenerRangoFechas() {
-      return {
-        desde: document.getElementById('filtro-desde-reporte').value,
-        hasta: document.getElementById('filtro-hasta-reporte').value
-      };
+    function obtenerTituloReporte() {
+      const desde = document.getElementById('filtro-desde-reporte').value;
+      const hasta = document.getElementById('filtro-hasta-reporte').value;
+      const periodo = `${formatearFecha(desde)} - ${formatearFecha(hasta)}`;
+      const nombre = perfilActual?.nombres_completos
+        || currentUser?.user_metadata?.nombres_completos
+        || currentUser?.email
+        || 'USUARIO';
+      return `ACTIVIDADES DESARROLLADAS POR EL LOC. ${nombre.toUpperCase()} EN EL PERIODO DE ${periodo}`;
     }
 
     // EXCEL
     document.getElementById('btn-excel').addEventListener('click', async () => {
       const data = await obtenerDatosReporte();
-      if (!data.length) {
-        mostrarToast('No hay atenciones en el rango seleccionado.', true);
-        return;
-      }
-      const { desde, hasta } = obtenerRangoFechas();
-      const periodo = `${formatearFecha(desde)} - ${formatearFecha(hasta)}`;
-      const titulo = `ACTIVIDADES DESARROLLADAS POR EL LOC. JUAN CARLOS CONDOR IRIGOIN EN EL PERIODO DE ${periodo}`;
+      if (!data.length) { mostrarToast('No hay atenciones en el rango.', true); return; }
+      const titulo = obtenerTituloReporte();
+      const incluirSello = document.getElementById('incluir-sello').checked;
 
       const ws_data = [
         [titulo],
@@ -1336,11 +1252,8 @@
       ];
       data.forEach(row => {
         ws_data.push([
-          formatearFecha(row.fecha),
-          row.unidad_departamento,
-          row.actividad,
-          row.prioridad || 'Normal',
-          row.estado || 'Atendido'
+          formatearFecha(row.fecha), row.unidad_departamento, row.actividad,
+          row.prioridad || 'Normal', row.estado || 'Atendido'
         ]);
       });
 
@@ -1349,40 +1262,33 @@
       ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 4 } }];
       ws['!cols'] = [{ wch: 15 }, { wch: 30 }, { wch: 60 }, { wch: 15 }, { wch: 15 }];
       XLSX.utils.book_append_sheet(wb, ws, "Actividades");
-      XLSX.writeFile(wb, `Actividades Loc Juan Carlos Condor al ${getFechaHoy().replace(/-/g, '')}.xlsx`);
-      mostrarToast('📊 Reporte Excel generado correctamente.');
+      const nombreArchivo = (perfilActual?.nombres_completos || 'Usuario').replace(/\s+/g, '_');
+      XLSX.writeFile(wb, `Actividades_${nombreArchivo}_al_${getFechaHoy().replace(/-/g,'')}.xlsx`);
+      mostrarToast('📊 Reporte Excel generado.');
     });
 
     // PDF
     document.getElementById('btn-pdf').addEventListener('click', async () => {
       const data = await obtenerDatosReporte();
-      if (!data.length) {
-        mostrarToast('No hay atenciones en el rango seleccionado.', true);
-        return;
-      }
-      const { desde, hasta } = obtenerRangoFechas();
-      const periodo = `${formatearFecha(desde)} - ${formatearFecha(hasta)}`;
-      const titulo = `ACTIVIDADES DESARROLLADAS POR EL LOC. JUAN CARLOS CONDOR IRIGOIN EN EL PERIODO DE ${periodo}`;
+      if (!data.length) { mostrarToast('No hay atenciones en el rango.', true); return; }
+      const titulo = obtenerTituloReporte();
+      const incluirSello = document.getElementById('incluir-sello').checked;
 
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF('landscape', 'mm', 'a4');
       const pageWidth = doc.internal.pageSize.width;
+      const pageHeight = doc.internal.pageSize.height;
 
-      doc.setFontSize(14);
       let fontSize = 14;
       doc.setFontSize(fontSize);
       while (doc.getTextWidth(titulo) > pageWidth - 20 && fontSize > 8) {
-        fontSize--;
-        doc.setFontSize(fontSize);
+        fontSize--; doc.setFontSize(fontSize);
       }
       doc.text(titulo, pageWidth / 2, 15, { align: 'center' });
 
       const rows = data.map(row => [
-        formatearFecha(row.fecha),
-        row.unidad_departamento,
-        row.actividad,
-        row.prioridad || 'Normal',
-        row.estado || 'Atendido'
+        formatearFecha(row.fecha), row.unidad_departamento, row.actividad,
+        row.prioridad || 'Normal', row.estado || 'Atendido'
       ]);
 
       doc.autoTable({
@@ -1392,12 +1298,51 @@
         styles: { fontSize: 8, cellPadding: 2 },
         headStyles: { fillColor: [21, 82, 53] },
         alternateRowStyles: { fillColor: [241, 245, 249] },
-        margin: { top: 30 }
+        margin: { top: 30, bottom: 60 }
       });
 
-      doc.save(`Actividades Loc Juan Carlos Condor al ${getFechaHoy().replace(/-/g, '')}.pdf`);
-      mostrarToast('📄 Reporte PDF generado correctamente.');
+      // ===== SELLO AL FINAL (última hoja, esquina inferior derecha) =====
+      if (incluirSello) {
+        const selloImg = await cargarImagenComoDataURL('sello.png');
+        if (selloImg) {
+          // Si el contenido ya llega al fondo, agregar nueva página
+          const finalY = doc.lastAutoTable.finalY;
+          if (finalY > pageHeight - 50) {
+            doc.addPage();
+          }
+
+          const selloSizeMM = 150 * 0.264583; // 150px ≈ 39.7 mm
+          const margen = 15; // mm desde el borde
+          const selloX = pageWidth - selloSizeMM - margen;
+          const selloY = pageHeight - selloSizeMM - margen;
+
+          try {
+            doc.addImage(selloImg, 'PNG', selloX, selloY, selloSizeMM, selloSizeMM);
+          } catch(e) {
+            console.error('Error agregando sello:', e);
+          }
+        }
+      }
+
+      const nombreArchivo = (perfilActual?.nombres_completos || 'Usuario').replace(/\s+/g, '_');
+      doc.save(`Actividades_${nombreArchivo}_al_${getFechaHoy().replace(/-/g,'')}.pdf`);
+      mostrarToast('📄 Reporte PDF generado.');
     });
+
+    function cargarImagenComoDataURL(url) {
+      return new Promise(resolve => {
+        const img = new Image();
+        img.crossOrigin = 'Anonymous';
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width; canvas.height = img.height;
+          canvas.getContext('2d').drawImage(img, 0, 0);
+          resolve(canvas.toDataURL('image/png'));
+        };
+        img.onerror = () => resolve(null);
+        img.src = url;
+      });
+    }
   </script>
 </body>
 </html>
